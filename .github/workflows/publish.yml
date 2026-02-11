@@ -27,6 +27,8 @@ jobs:
       - name: Prepare repo
         run: |
           git fetch origin
+          git config --global user.email "tobias.huste@hu-berlin.de"
+          git config --global user.name "tobhu1981"
           git checkout gh-pages
           git reset --hard main
       
