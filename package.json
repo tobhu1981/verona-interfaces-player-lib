@@ -1,0 +1,48 @@
+{
+  "name": "@verona-interfaces/player",
+  "version": "1.0.0",
+  "description": "TypeScript library for Verona Player interfaces",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist *.tsbuildinfo",
+    "typecheck": "tsc --noEmit",
+    "docs": "typedoc",
+    "docs:serve": "npm run docs && npx serve docs",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "verona",
+    "verona-spec-6.1.1",
+    "player",
+    "editor",
+    "interface",
+    "assessment",
+    "iqb"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "typedoc": "^0.25.7",
+    "typedoc-plugin-markdown": "^3.17.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
