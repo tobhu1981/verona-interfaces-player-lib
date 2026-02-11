@@ -12,7 +12,8 @@ jobs:
   docs:
     name: Generate API Documentation
     runs-on: ubuntu-latest
-    
+    permissions:
+      contents: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -44,8 +45,6 @@ jobs:
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: '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'
-          publish_dir: ./docs
-          user_name: 'tobhu1981'
-          user_email: 'tobias.huste@hu-berlin.de'
-          commit_message: 'docs: update API documentation'
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
