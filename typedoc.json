@@ -3,7 +3,7 @@
   "name": "Verona Interfaces",
   "entryPoints": ["src/index.ts"],
   "out": "docs",
-  "readme": "README.md",
+  "readme": "none",
   "excludePrivate": false,
   "excludeProtected": false,
   "excludeInternal": true,
