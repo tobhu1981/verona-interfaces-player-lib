@@ -24,25 +24,24 @@ jobs:
           node-version: '18'
           cache: 'npm'
       
-      - name: Prepare repo
-        run: |
-          git fetch origin
-          git config --global user.email "tobias.huste@hu-berlin.de"
-          git config --global user.name "tobhu1981"
-          git checkout gh-pages
-          git reset --hard main
-      
-      - name: Run html generation
-        run: |
-          npm ci
-          npm run build
-          npm run docs
-      
-      - name: Push changes
-        run: |
-          git add docs
-          git commit -m "update gh-pages"
-          git push -f
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build package
+        run: npm run build
+        
+      - name: Generate documentation
+        run: npm run docs
+        
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-docs
+          path: docs/
+          retention-days: 30
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+          with:
+              github_token: ${{ secrets.GITHUB_TOKEN }}
+              publish_dir: ./docs
