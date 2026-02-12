@@ -14,8 +14,14 @@ npm run build
 
 **Im Player**
 
+Zuvor in `package.json` Pfad zur Lib angegeben.
+Hier ein Beispiel:
+
+ `"@verona-interfaces/player": "file:../verona-interfaces-player-lib"`
+
+
 ```bash
-npm install @verona/interfaces
+npm install @verona-interfaces/player
 ```
 
 ## Quick Start
