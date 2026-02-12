@@ -12,7 +12,7 @@ import { FileService } from 'common/services/file.service';
 import { Unit } from 'common/interfaces/unit';
 import { UnitViewComponent } from './unit-view.component';
 
-import { VeronaPlayerApiService, encodeBase64 , decodeBase64, UnitState} from '@verona-interfaces/player';
+import { VeronaPlayerApiService, StartCommandData, encodeBase64, decodeBase64, UnitState} from '@verona-interfaces/player';
 
 @Component({
   selector: 'speedtest-player',
@@ -85,7 +85,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     // Register start handler
-    this.veronaPlayer.onStartCommand((command) => {
+    this.veronaPlayer.onStartCommand((command: StartCommandData) => {
       if (!command.unitDefinition) return;
       
       this.resetUnitState();
@@ -178,7 +178,6 @@ export class AppComponent implements OnInit, OnDestroy {
     
     // Send state via Verona Lib
     this.sendResponseState(answer, isCorrect);
-    
     this.gotoNextQuestion();
   }
 
@@ -213,7 +212,7 @@ export class AppComponent implements OnInit, OnDestroy {
         status: 'CODING_COMPLETE',
         value: answerValue,
         subform: String(this.activeQuestionIndex),
-        code,
+        code: code,
         score: code
       },
       {
@@ -248,14 +247,21 @@ export class AppComponent implements OnInit, OnDestroy {
     // Create UnitState with base64 encoded data
     const unitState: UnitState = {
       dataParts: {
-        [`question_${this.activeQuestionIndex}`]: encodeBase64(questionResponse),
+        [`question_${this.activeQuestionIndex}`]: JSON.stringify(questionResponse),
+        'sums': JSON.stringify(sums),
+        'activeQuestionIndex': JSON.stringify(activeIndex)
+        /* Wenn Base64 vom Host kommt, muss JSON.stringify nicht mehr verwendet werden
+        `question_${this.activeQuestionIndex}`]: encodeBase64(questionResponse),
         'sums': encodeBase64(sums),
         'activeQuestionIndex': encodeBase64(activeIndex)
+        */
       },
       presentationProgress: 'complete',
       responseProgress: 'complete',
       unitStateDataType: 'iqb-standard@1.0'
     };
+
+    
 
     // Send via Verona Player
     this.veronaPlayer.sendStateChanged(unitState);
@@ -266,10 +272,10 @@ export class AppComponent implements OnInit, OnDestroy {
    */
   private sendEmptyState(): void {
     const unitState: UnitState = {
-      dataParts: {},
+      unitStateDataType: 'iqb-standard@1.0',
       presentationProgress: 'complete',
       responseProgress: 'none',
-      unitStateDataType: 'iqb-standard@1.0'
+      dataParts: {}
     };
 
     this.veronaPlayer.sendStateChanged(unitState);
