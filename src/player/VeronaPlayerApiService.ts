@@ -215,7 +215,7 @@ export class VeronaPlayerApiService {
    */
   onStartCommand(callback: (data: StartCommandData) => void): void {
     this.on(VeronaOperations.START_COMMAND, (data: StartCommandData) => {
-       if (data.sessionId) {
+    if (data.sessionId) {
       this.sessionId = data.sessionId;
       callback(data);
     } else {

@@ -12,6 +12,7 @@ import { FileService } from 'common/services/file.service';
 import { Unit } from 'common/interfaces/unit';
 import { UnitViewComponent } from './unit-view.component';
 
+// TODO: base64 encoding/decoding if host sends/accepts base64 encoded data
 import { VeronaPlayerApiService, StartCommandData, encodeBase64, decodeBase64, UnitState} from '@verona-interfaces/player';
 
 @Component({
@@ -53,6 +54,7 @@ import { VeronaPlayerApiService, StartCommandData, encodeBase64, decodeBase64, U
     }
   `
 })
+
 export class AppComponent implements OnInit, OnDestroy {
   private veronaPlayer!: VeronaPlayerApiService;
 
@@ -84,34 +86,34 @@ export class AppComponent implements OnInit, OnDestroy {
       allowedOrigin: '*'
     });
 
-    // Register start handler
+    // Register start handler before sendReady command
     this.veronaPlayer.onStartCommand((command: StartCommandData) => {
-      if (!command.unitDefinition) return;
+    if (!command.unitDefinition) return;
       
-      this.resetUnitState();
+    this.resetUnitState();
       
-      // Wait for child component to be destroyed
-      setTimeout(() => {
-        this.unit = JSON.parse(command.unitDefinition!) as Unit;
-        
-        // Restore previous state if available
-        if (command.unitState?.dataParts !== undefined && Object.keys(command.unitState.dataParts).length > 0) {
-          this.restoreState(command.unitState);
-        }
-        
-        // Check if unit is already complete
-        if (this.activeQuestionIndex >= this.unit!.questions.length) {
-          this.showOutroPage = true;
-        }
-        
-        // Send initial state
-        this.sendEmptyState();
+    // Wait for child component to be destroyed
+    setTimeout(() => {
+      this.unit = JSON.parse(command.unitDefinition!) as Unit;
+      
+      // Restore previous state if available
+      if (command.unitState?.dataParts !== undefined && Object.keys(command.unitState.dataParts).length > 0) {
+        this.restoreState(command.unitState);
+      }
+      
+      // Check if unit is already complete
+      if (this.activeQuestionIndex >= this.unit!.questions.length) {
+        this.showOutroPage = true;
+      }
+      
+      // Send initial state
+      this.sendEmptyState();
       });
     });
 
     // Send ready notification
-      this.veronaPlayer.sendReady({
-        metadata: metadata ? JSON.parse(metadata) : {}
+    this.veronaPlayer.sendReady({
+      metadata: metadata ? JSON.parse(metadata) : {}
     });
   }
 
@@ -147,18 +149,21 @@ export class AppComponent implements OnInit, OnDestroy {
     try {
       // Restore active question index
       if (unitState.dataParts['activeQuestionIndex']) {
-        const data = decodeBase64<Array<{value: number}>>(unitState.dataParts['activeQuestionIndex']);
+        // TODO: Base64 decoding if host sends base64 encoded data
+        // decodeBase64<Array<{value: number}>>(unitState.dataParts['activeQuestionIndex']);
+        const data = JSON.parse(unitState.dataParts['activeQuestionIndex']) as Array<{value: number}>;
         // Add 1 because activeQuestionIndex has already been seen and answered
         this.activeQuestionIndex = Number(data[0].value) + 1;
       }
-
       // Restore sums
       if (unitState.dataParts['sums']) {
-        const data = decodeBase64<Array<{id: string, value: number}>>(unitState.dataParts['sums']);
+        // TODO: Base64 decoding if host sends base64 encoded data
+        // const data = decodeBase64<Array<{id: string, value: number}>>(unitState.dataParts['sums']);
+        const data = JSON.parse(unitState.dataParts['sums']) as Array<{id: string, value: number}>;
         this.sumCorrect = Number(data[0].value);
         this.sumWrong = Number(data[1].value);
       }
-    } catch (error) {
+  } catch (error) {
       console.error('Error restoring state:', error);
     }
   }
@@ -250,18 +255,15 @@ export class AppComponent implements OnInit, OnDestroy {
         [`question_${this.activeQuestionIndex}`]: JSON.stringify(questionResponse),
         'sums': JSON.stringify(sums),
         'activeQuestionIndex': JSON.stringify(activeIndex)
-        /* Wenn Base64 vom Host kommt, muss JSON.stringify nicht mehr verwendet werden
-        `question_${this.activeQuestionIndex}`]: encodeBase64(questionResponse),
-        'sums': encodeBase64(sums),
-        'activeQuestionIndex': encodeBase64(activeIndex)
-        */
+        // TODO: base64 encoding/decoding if host sends/accepts base64 encoded data
+        //`question_${this.activeQuestionIndex}`]: encodeBase64(questionResponse),
+        //'sums': encodeBase64(sums),
+        //'activeQuestionIndex': encodeBase64(activeIndex)
       },
       presentationProgress: 'complete',
       responseProgress: 'complete',
       unitStateDataType: 'iqb-standard@1.0'
     };
-
-    
 
     // Send via Verona Player
     this.veronaPlayer.sendStateChanged(unitState);
@@ -297,6 +299,5 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 }
-
 
 ```
