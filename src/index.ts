@@ -13,7 +13,15 @@ export * from './types';
 export * from './utils';
 
 // Player
-export * from './player';
+export { VeronaPlayerApiService } from './services/VeronaPlayerApiService';
+export type {
+  VeronaPlayerOptions,
+  StartCommandData,
+  PageNavigationCommandData,
+  NavigationDeniedNotificationData,
+  PlayerConfigChangedNotificationData,
+  WidgetReturnData
+} from './services/VeronaPlayerApiService';
 
 // ============================================================================
 // CONVENIENCE TYPE EXPORTS - Direct access to commonly used types

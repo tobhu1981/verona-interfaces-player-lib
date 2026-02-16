@@ -1,6 +1,6 @@
 {
   "name": "@verona-interfaces/player",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "TypeScript library for Verona Player interfaces",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
