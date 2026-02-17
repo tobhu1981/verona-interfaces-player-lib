@@ -22,9 +22,9 @@ Hier ein Beispiel:
 npm install @verona-interfaces/player
 ```
 
-## Probeweise Einbindung in den Verona-Module-Speedtest-Player
+## Erprobung der Lib
 
-[**Hier**](./Example-Speedtestplayer.md) ist eine Zusammenfassung zur Erprobung im Speedtest-Player zu finden.
+[**Hier**](./PLAYER-INTEGRATION.md) ist eine Zusammenfassung zur Erprobung mit dem Speedtest-Player zu finden.
 
 ## Documentation
 

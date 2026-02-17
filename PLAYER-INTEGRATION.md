@@ -1,6 +1,6 @@
-## Einbinden der Lib in `app.component.ts` 
+## Erprobung der Lib im Speedtest-Player
 
-### `verona-api.service.ts` entfällt nach Einbindung!
+**Ersetzungen in `app.component.ts`, `verona-api.service.ts` kann dann entfallen:**
 
 ```typescript
 
@@ -302,9 +302,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 ```
 
-## Erprobung in Verona Module Speedtest
-
-Es handelt sich hier um eine erste Version. Bisherige Tests nur mit dem **Verona Modul Speedtest**.
+## Ergebnisse der Erprobung
 
 **Folgende Handshakes zwischen Player und Host wurden bisher getestet:**
 
