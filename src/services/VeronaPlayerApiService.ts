@@ -87,9 +87,8 @@ export class VeronaPlayerApiService {
     };
 
     // Register global message listener
-    window.addEventListener('message', (event: MessageEvent) => {
-      this.handleMessage(event);
-    });
+    window.addEventListener('message', this.messageListener);
+  
   }
 
   // ============================================================================
