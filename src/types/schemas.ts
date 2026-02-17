@@ -67,7 +67,7 @@ export namespace MainSchema {
  
   /** Player state with page information. Sent by player to inform host about current page state. @public*/
   export interface WidgetParameter {
-    key: String; //>=2 characters
+    key: string; //>=2 characters
     value?: string;
   }
 }
