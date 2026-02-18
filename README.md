@@ -28,13 +28,17 @@ npm install @verona-interfaces/player
 
 ## Documentation
 
-API Doku erzeugen: 
+#### API Doku erzeugen: 
 
 ```bash
 npm run docs
 ```
 
 Die so erzeugte API-Doku wird auch auf GitHub-Pages via GitHub-Action angezeigt. 
+
+#### Arbeitsweise der Bibliothek
+
+[**Hier**](./LIB_WORKFLOW.md)
 
 ## Versionierung
 
